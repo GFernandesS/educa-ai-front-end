@@ -1,0 +1,22 @@
+.exit-icon {
+    font-size: 20px;
+    margin-right: 5%;
+    transition: 300ms;
+    cursor: pointer;
+}
+
+.menu-icon {
+    font-size: 20px;
+    margin-left: 3%;
+    transition: 300ms;
+    margin-bottom: 25px;
+    cursor: pointer;
+}
+
+.exit-icon:hover {
+    color: #faccf8;
+}
+
+.menu-icon:hover {
+    color: #faccf8;
+}

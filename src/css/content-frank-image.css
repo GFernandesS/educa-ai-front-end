@@ -1,0 +1,22 @@
+.datamotica-logo {
+    height: 120px;
+    width: 120px;
+}
+
+.datamotica-logo-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 5%;
+    width: 100%;
+}
+
+@media screen and (max-width: 1366px) {
+    .datamotica-logo {
+        width: 90px;
+        height: 90px;
+    }
+
+    .datamotica-logo-container {
+        margin-top: 5%;
+    }
+}

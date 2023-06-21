@@ -1,0 +1,30 @@
+.input {
+    font-size: 16px;
+}
+
+.terms-and-conditions {
+    font: normal normal normal 12px/38px Poppins;
+}
+
+.form {
+    font: normal normal normal 20px/38px Poppins;
+}
+
+.input-label {
+    font: normal normal normal 17px/38px Poppins;
+}
+
+.input:hover {
+    border-color: #B57BB5;
+}
+
+.input:focus {
+    border-color: #B57BB5;
+    filter: drop-shadow(0 0 0.01em #B57BB5);
+}
+
+@media screen and (max-width: 1366px) {
+    .input-label {
+        font: normal normal normal 17px/38px Poppins;
+    }
+}
