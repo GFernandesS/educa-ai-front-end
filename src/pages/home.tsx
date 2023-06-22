@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { FC } from 'react'
 import { Col, Row } from 'antd'
-import Header from '../components/FranqIAHeader'
+import Header from '../components/EduIAHeader'
 import { useNavigate } from 'react-router-dom'
 import '../css/home.css'
-import { ContentWithFrankImage } from '../components/ContentWithFrankImage'
+import { ContentWithEduImage } from '../components/ContentWithEduImage'
 import { HomeButtonStyle } from '../style/HomeButtonStyle'
 
 interface IHome { }
@@ -17,33 +17,33 @@ const Home: FC<IHome> = ({ }) => {
    return (
       <>
          <Header setContentHeight={setContentHeight} />
-         <ContentWithFrankImage >
+         <ContentWithEduImage >
             <Row style={{ marginTop: "50px" }}>
                <Col md={8} xs={2} />
                <Col xs={22} md={8} className='title'>
-                  Olá, Seja bem-vindo!
+                  Olá estudante! Seja bem-vindo!
                </Col>
                <Col span={8} xs={0} />
             </Row>
             <Row style={{ marginTop: '5px' }}>
                <Col md={8} xs={2} />
                <Col xs={22} md={8} className='text'>
-                  A DataMotica disponibiliza FranqIA, uma ferramenta de Inteligência Artificial especializada em franquias e negócios.
+                  Aqui você conhecerá o Edu, uma inteligência artificial especialista em educação que te ajudará nas matérias do dia a dia.
                </Col>
             </Row>
             <Row>
                <Col md={8} xs={2} />
                <Col xs={22} md={8} className='text' style={{ marginTop: '3%' }}>
-                  Frank, nosso assistente virtual, ainda não é perfeito, está aprendendo e dando seus primeiros passos.
+                  Ele tirará suas dúvidas e vai te apoiar no que deseja se tornar.
                </Col>
             </Row>
             <Row style={{ marginTop: '50px' }}>
                <Col md={8} xs={2} />
                <Col xs={20} md={8} className='text-button text'>
-                  <HomeButtonStyle onClick={() => navigate('/login')}>Testar consultor de franquias</HomeButtonStyle>
+                  <HomeButtonStyle onClick={() => navigate('/login')}>Bora lá!</HomeButtonStyle>
                </Col>
             </Row>
-         </ContentWithFrankImage>
+         </ContentWithEduImage>
       </>
    )
 }

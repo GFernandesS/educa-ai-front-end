@@ -1,19 +1,19 @@
-import logo from '../assets/datamotica.png'
+import logo from '../assets/edu.png'
 import React from 'react'
-import '../css/content-frank-image.css'
+import '../css/content-edu-image.css'
 import { Col, Row } from 'antd'
 
 export interface SideContentProps {
     children?: any
 }
 
-export function ContentWithFrankImage({ children }: SideContentProps) {
+export function ContentWithEduImage({ children }: SideContentProps) {
     return (
         <>
             <Row style={{marginTop: '20px'}}>
                 <Col span={8} />
                 <Col span={8} style={{ display: 'flex', justifyContent: 'center' }}>
-                    <img src={logo} className="datamotica-logo" />
+                    <img src={logo} className="edu-logo" />
                 </Col>
                 <Col span={8} />
             </Row>

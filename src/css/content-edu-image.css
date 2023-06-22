@@ -1,9 +1,9 @@
-.datamotica-logo {
+.edu-logo {
     height: 120px;
     width: 120px;
 }
 
-.datamotica-logo-container {
+.edu-logo-container {
     display: flex;
     justify-content: center;
     margin-top: 5%;
@@ -11,12 +11,12 @@
 }
 
 @media screen and (max-width: 1366px) {
-    .datamotica-logo {
+    .edu-logo {
         width: 90px;
         height: 90px;
     }
 
-    .datamotica-logo-container {
+    .edu-logo-container {
         margin-top: 5%;
     }
 }

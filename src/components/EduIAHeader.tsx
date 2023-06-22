@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { Layout, Row, Col } from 'antd'
-import logo from '../assets/franqia_logo.png'
+import logo from '../assets/edu.png'
 import '../css/logo.css'
 import { UserOutlined, DeleteRowOutlined, PicLeftOutlined } from '@ant-design/icons'
 import '../css/header.css'
@@ -8,13 +8,13 @@ import { useNavigate } from 'react-router-dom'
 
 const { Header } = Layout
 
-interface IFranqIAHeaderProps {
+interface IEduIAHeaderProps {
    setContentHeight: (height: number) => void,
    isLogged?: boolean,
    onClickMenu?: () => void
 }
 
-export default function FranqIAHeader({ setContentHeight, isLogged, onClickMenu }: IFranqIAHeaderProps) {
+export default function EduIAHeader({ setContentHeight, isLogged, onClickMenu }: IEduIAHeaderProps) {
 
    const headerRef = useRef<HTMLElement>(null)
 
@@ -35,8 +35,8 @@ export default function FranqIAHeader({ setContentHeight, isLogged, onClickMenu 
    }, [])
 
    const handleLogoutOnClick = () => {
-      localStorage.removeItem('apiKey')
-      localStorage.removeItem('username')
+      localStorage.removeItem('name')
+      localStorage.removeItem('id')
       navigate('/')
    }
 
@@ -59,14 +59,16 @@ export default function FranqIAHeader({ setContentHeight, isLogged, onClickMenu 
                <img
                   className='logo'
                   src={logo}
-                  alt="FranqIA"
-                  onClick={() => window.open("https://www.datamotica.com/")}
+                  alt="EducaAi"
                   style={{
-                     height: '93px',
-                     marginLeft: '32px',
+                     height: '60px',
+                     marginLeft: '25px',
                      marginBottom: '15px'
                   }}
                />
+               <span style={{ font: 'normal normal 500 25px/46px Poppins', marginLeft: "10px" }}>
+                  EducaAi
+               </span>
             </Col>
             <Col span={12} style={{
                display: 'flex',
@@ -80,16 +82,10 @@ export default function FranqIAHeader({ setContentHeight, isLogged, onClickMenu 
                      <>
                         <UserOutlined style={{ marginRight: '10px', fontSize: 20 }} />
                         <p style={{ marginRight: '32px', marginBottom: '20px', font: 'normal normal normal 20px/30px Segoe UI' }}>
-                           {localStorage.getItem('username')}
+                           {localStorage.getItem('name')}
                         </p>
                         <DeleteRowOutlined className='exit-icon' onClick={handleLogoutOnClick} />
                      </>
-                  )
-                  ||
-                  (
-                     <p style={{ marginRight: '32px', font: 'normal normal normal 20px/30px Segoe UI' }}>
-                        VERSÃO BETA
-                     </p>
                   )
                }
             </Col>

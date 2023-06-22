@@ -1,12 +1,12 @@
-import { Row, Col, Button, List, notification, Spin, Form } from 'antd'
-import Header from '../components/FranqIAHeader'
+import { Row, Col, Button, List, notification, Spin, Form, Tooltip, message as messageAntd } from 'antd'
+import Header from '../components/EduIAHeader'
 import { useEffect, useRef, useState } from 'react'
-import { SendOutlined, LikeOutlined, DislikeOutlined } from '@ant-design/icons'
+import { SendOutlined, LikeOutlined, DislikeOutlined, CopyOutlined } from '@ant-design/icons'
 import { StyledContent } from '../style/ContentStyle'
 import { useQuery, useMutation, useQueryClient } from 'react-query'
 import api from '../api/api'
-import { FrankUserIcon } from '../style/FrankUserIcon'
-import logo from '../assets/frank_rosto.png'
+import { EduUserIcon } from '../style/EduUserIcon'
+import logo from '../assets/edu.png'
 import { UserIcon } from '../style/UserIcon'
 import { MessageTextArea } from '../style/MessageTextArea'
 import { ResponseText } from '../style/ResponseText'
@@ -41,6 +41,8 @@ export const Chat = () => {
 
     const [form] = Form.useForm()
 
+    const [messageApi, contextHolder] = messageAntd.useMessage();
+
     const invalidateQueries = () => {
         queryClient.invalidateQueries('responses')
         queryClient.invalidateQueries('quota')
@@ -48,31 +50,15 @@ export const Chat = () => {
     }
 
     const responseQuery = useQuery<[{ input: string, output: string, responseId: string }]>('responses', async () => {
-        if (localStorage.getItem('apiKey')) {
-            const response = await api.get('/session/responses', { headers: { "api-key": localStorage.getItem('apiKey') } })
-            return response.data
-        }
-    }, { refetchOnWindowFocus: false })
-
-    const quotaQuery = useQuery<{ usedQuota: number, maxPermittedResponses: number, expireMoment: Date }>('quota', async () => {
-        if (localStorage.getItem('apiKey')) {
-            const response = await api.get('/session/quota', { headers: { "api-key": localStorage.getItem('apiKey') } })
-            return response.data
-        }
-    }, { refetchOnWindowFocus: false, })
-
-    const availableSessionsQuery = useQuery<number>('count-available', async () => {
-        const apiKey = localStorage.getItem('apiKey')
-
-        if (apiKey) {
-            const response = await api.get('/session/count-available', { headers: { "api-key": apiKey } })
+        if (localStorage.getItem('id')) {
+            const response = await api.get('/chat/responses', { headers: { "id": localStorage.getItem('id') } })
             return response.data
         }
     }, { refetchOnWindowFocus: false })
 
     const sendMessageMutation = useMutation({
         mutationFn: async (message: string) => {
-            await api.post('/chat', { message }, { headers: { "api-key": localStorage.getItem('apiKey') } })
+            await api.post('/chat', { message }, { headers: { "id": localStorage.getItem('id') } })
         },
         onSuccess: () => {
             invalidateQueries()
@@ -88,28 +74,15 @@ export const Chat = () => {
         }
     })
 
-    const startSessionMutation = useMutation({
-        mutationFn: async () => {
-            await api.post('/session/start', {}, { headers: { "api-key": localStorage.getItem('apiKey') } })
-            invalidateQueries()
-        },
-        onSuccess: () => {
-            notification.success({ message: 'Sessão iniciada com sucesso!', duration: 3 })
-        },
-        onError: (error: AxiosError) => {
-            invalidateQueries()
-        }
-    })
-
     useEffect(() => {
-        if (!localStorage.getItem('apiKey'))
+        if (!localStorage.getItem('id'))
             navigate('/')
     }, [])
 
     useEffect(() => {
-        if (quotaQuery?.data && quotaQuery.data.usedQuota < quotaQuery.data.maxPermittedResponses && isMenuVisible)
+        if (isMenuVisible)
             setIsMenuVisible(false)
-    }, [sendMessageMutation?.isLoading, quotaQuery?.data])
+    }, [sendMessageMutation?.isLoading])
 
     const handleSetIsMenuVisible = () => {
         setIsMenuVisible(!isMenuVisible)
@@ -135,12 +108,13 @@ export const Chat = () => {
     //TODO: Componentizar botão de envio de mensagem
     return (
         <>
+            {contextHolder}
             <Header onClickMenu={handleSetIsMenuVisible} setContentHeight={setContentHeight} isLogged={true} />
-            <Spin size='large' indicator={<LoadingSpin />} spinning={quotaQuery.isLoading || responseQuery.isLoading}>
+            <Spin size='large' indicator={<LoadingSpin />} spinning={responseQuery.isLoading}>
                 <Row>
                     {isMenuVisible &&
                         <Col xs={24} md={4}>
-                            <ChatSider contentHeight={contentHeight} quotaQuery={quotaQuery} countAvailableSessionQuery={availableSessionsQuery} startSessionMutation={startSessionMutation} />
+                            <ChatSider contentHeight={contentHeight} />
                         </Col>
                     }
                     <Col md={isMenuVisible ? 20 : 24}>
@@ -151,7 +125,7 @@ export const Chat = () => {
                                         {
                                             !responseQuery?.data?.length && !sendMessageMutation.isLoading &&
                                             <p style={{ fontSize: '17px', color: 'white', display: 'flex', justifyContent: 'center' }}>
-                                                {!quotaQuery.data ? "Inicie uma sessão para começar a conversar com o Frank! 😊" : "Envie uma mensagem para começar a conversar com o Frank! 😊"}
+                                                {"Envie uma mensagem para começar a conversar com o Edu! 😊"}
                                             </p>
                                         }
                                         <List
@@ -178,9 +152,15 @@ export const Chat = () => {
                                                                         setCurrentResponseId(item.responseId)
                                                                         setIsPositiveFeedbackModalOpen(true)
                                                                     }} icon={<LikeOutlined />} style={{ color: '#bff5c1' }}></Button>
+                                                                    <Tooltip title="Copiar mensagem">
+                                                                        <Button type='text' onClick={async () => {
+                                                                            await navigator.clipboard.writeText(item.output)
+                                                                            messageApi.success("Resposta copiada para a área de transferência")
+                                                                        }} icon={<CopyOutlined />} style={{ color: '#c8cac8' }}></Button>
+                                                                    </Tooltip>
                                                                 </div>
                                                                 <div style={{ width: '90%' }}>
-                                                                    <FrankUserIcon src={logo} />
+                                                                    <EduUserIcon src={logo} />
                                                                     <Linkify>
                                                                         {item.output}
                                                                     </Linkify>
@@ -202,7 +182,7 @@ export const Chat = () => {
                                                     </List.Item>
                                                     <List.Item>
                                                         <ResponseText backgroundcolor='#555455' style={{ display: 'flex', fontSize: '20px' }}>
-                                                            <FrankUserIcon src={logo} />
+                                                            <EduUserIcon src={logo} />
                                                             <Typewriter
                                                                 options={{
                                                                     strings: ['.......'],
@@ -226,7 +206,6 @@ export const Chat = () => {
                                                 <MessageTextArea
                                                     style={{ marginLeft: '0px' }}
                                                     ref={messageInputRef}
-                                                    disabled={!quotaQuery.data}
                                                     onPressEnter={(e) => {
                                                         e.preventDefault()
                                                         form.submit()
@@ -235,10 +214,9 @@ export const Chat = () => {
                                             </Form.Item>
                                             <Button
                                                 icon={<SendOutlined color='black' style={{ color: 'black' }} />}
-                                                disabled={!quotaQuery.data}
                                                 type='primary'
                                                 htmlType='submit'
-                                                loading={sendMessageMutation.isLoading || startSessionMutation.isLoading}
+                                                loading={sendMessageMutation.isLoading}
                                                 onClick={handleSendMessage}
                                                 style={{
                                                     backgroundColor: '#d9d6db',

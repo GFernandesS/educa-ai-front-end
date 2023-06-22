@@ -1,6 +1,6 @@
 import styled from "styled-components"
 
-export const FrankUserIcon = styled.img`
+export const EduUserIcon = styled.img`
     height: 30px;
     width: 30px;
     border-radius: 50%;
