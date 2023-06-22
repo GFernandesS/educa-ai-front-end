@@ -11,10 +11,11 @@ const { Header } = Layout
 interface IEduIAHeaderProps {
    setContentHeight: (height: number) => void,
    isLogged?: boolean,
+   hideMenu?: boolean,
    onClickMenu?: () => void
 }
 
-export default function EduIAHeader({ setContentHeight, isLogged, onClickMenu }: IEduIAHeaderProps) {
+export default function EduIAHeader({ setContentHeight, isLogged, onClickMenu, hideMenu }: IEduIAHeaderProps) {
 
    const headerRef = useRef<HTMLElement>(null)
 
@@ -37,6 +38,7 @@ export default function EduIAHeader({ setContentHeight, isLogged, onClickMenu }:
    const handleLogoutOnClick = () => {
       localStorage.removeItem('name')
       localStorage.removeItem('id')
+      localStorage.removeItem('role')
       navigate('/')
    }
 
@@ -55,7 +57,6 @@ export default function EduIAHeader({ setContentHeight, isLogged, onClickMenu }:
                   justifyContent: 'flex-start',
                }}
             >
-               {isLogged && <PicLeftOutlined className='menu-icon' onClick={onClickMenu} />}
                <img
                   className='logo'
                   src={logo}

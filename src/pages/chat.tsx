@@ -17,13 +17,15 @@ import Linkify from 'react-linkify'
 import Typewriter from 'typewriter-effect'
 import { NegativeFeedbackModal, PositiveFeedbackModal } from '../components/FeedbackModal'
 import { ChatSider } from '../components/ChatSider'
+import { UserRole } from '../enums/user-role'
+import { useAuthorization } from '../hooks/useAuthorization'
 
 export const Chat = () => {
     const [contentHeight, setContentHeight] = useState(0)
 
     const [message, setMessage] = useState('')
 
-    const navigate = useNavigate()
+    useAuthorization(true)
 
     const [isPositiveFeedbackModalOpen, setIsPositiveFeedbackModalOpen] = useState(false)
 
@@ -75,11 +77,6 @@ export const Chat = () => {
     })
 
     useEffect(() => {
-        if (!localStorage.getItem('id'))
-            navigate('/')
-    }, [])
-
-    useEffect(() => {
         if (isMenuVisible)
             setIsMenuVisible(false)
     }, [sendMessageMutation?.isLoading])
@@ -112,12 +109,7 @@ export const Chat = () => {
             <Header onClickMenu={handleSetIsMenuVisible} setContentHeight={setContentHeight} isLogged={true} />
             <Spin size='large' indicator={<LoadingSpin />} spinning={responseQuery.isLoading}>
                 <Row>
-                    {isMenuVisible &&
-                        <Col xs={24} md={4}>
-                            <ChatSider contentHeight={contentHeight} />
-                        </Col>
-                    }
-                    <Col md={isMenuVisible ? 20 : 24}>
+                    <Col md={24}>
                         <StyledContent hasbackgroundcolor={false} contentheight={contentHeight}>
                             <div style={{ maxHeight: '100%', height: '100%', backgroundColor: '#373437', width: '100%' }}>
                                 <Row ref={responsesScroll} justify='center' align='top' style={{ height: '80%', backgroundColor: '#373437', overflow: 'auto' }}>

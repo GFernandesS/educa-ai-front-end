@@ -6,6 +6,7 @@ import { Chat } from './pages/chat'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { Login } from './pages/login'
 import './css/global.css'
+import TeacherComment from './pages/teacher-comment'
 
 const router = createBrowserRouter([
    {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
    {
       path: '/login',
       element: <Login />
+   },
+   {
+      path: '/teacher-comment',
+      element: <TeacherComment />
    }])
 
 const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } })

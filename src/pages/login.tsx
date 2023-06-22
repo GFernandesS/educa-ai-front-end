@@ -11,6 +11,7 @@ import { HomeButtonStyle } from "../style/HomeButtonStyle"
 import "../css/home.css"
 import "../css/login.css"
 import { UserRole } from "../enums/user-role"
+import { useAuthorization } from "../hooks/useAuthorization"
 
 export const Login = () => {
     const [contentHeight, setContentHeight] = useState(0)
@@ -19,10 +20,7 @@ export const Login = () => {
 
     const [form] = Form.useForm()
 
-    useEffect(() => {
-        if (localStorage.getItem('id'))
-            navigate('/chat')
-    }, [])
+    useAuthorization(false)
 
     const loginMutation = useMutation({
         mutationFn: async ({ email, password }: { email: string, password: string }): Promise<any> => {
@@ -37,10 +35,11 @@ export const Login = () => {
         onSuccess: async (data, variables, context) => {
             localStorage.setItem('name', data.data.name)
             localStorage.setItem('id', data.data.id)
+            localStorage.setItem('role', data.data.role)
             if (data.data.role == UserRole.Student)
                 navigate("/chat")
             else
-                navigate("/teacher")
+                navigate("/teacher-comment")
         }
     })
 

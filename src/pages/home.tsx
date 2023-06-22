@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FC } from 'react'
 import { Col, Row } from 'antd'
 import Header from '../components/EduIAHeader'
@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import '../css/home.css'
 import { ContentWithEduImage } from '../components/ContentWithEduImage'
 import { HomeButtonStyle } from '../style/HomeButtonStyle'
+import { UserRole } from '../enums/user-role'
 
 interface IHome { }
 
